@@ -1,11 +1,36 @@
 const storage = chrome.storage.sync;
 chrome.storage.sync.get(['chatbotUrl'], function(result) {
   window.difyChatbotConfig = { 
-    chatbotUrl: result.chatbotUrl,
+    chatbotUrl: sanitizeUrl(result.chatbotUrl),
   };
 });
 
 document.body.onload = embedChatbot;
+
+function sanitizeUrl(url) {
+  const parser = document.createElement('a');
+  parser.href = url;
+
+  // Check if the URL is valid
+  if (!parser.protocol || !parser.host) {
+    console.warn('Invalid URL');
+    return '';
+  }
+
+  // Check if the URL uses HTTPS
+  if (parser.protocol !== 'https:') {
+    console.warn('URL must use HTTPS');
+    return '';
+  }
+
+  // Check for malicious scripts
+  if (url.includes('javascript:') || url.includes('<script>')) {
+    console.warn('URL contains malicious scripts');
+    return '';
+  }
+
+  return url;
+}
 
 async function embedChatbot() {
   const difyChatbotConfig = window.difyChatbotConfig;
