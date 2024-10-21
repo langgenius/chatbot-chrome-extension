@@ -27,6 +27,30 @@
       </div>
 
       <div class="mb-4 flex items-center">
+        <div class="w-1/4">
+          <label for="data-extraction" class="block font-semibold text-gray-700">Enable Data Extraction</label>
+        </div>
+        <div class="w-3/4">
+          <input type="checkbox" id="data-extraction" name="data-extraction" class="mr-2">
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-center">
+        <div class="w-1/4">
+          <label for="data-types" class="block font-semibold text-gray-700">Data Types to Extract</label>
+        </div>
+        <div class="w-3/4">
+          <select id="data-types" name="data-types" multiple class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-400">
+            <option value="headings">Headings</option>
+            <option value="paragraphs">Paragraphs</option>
+            <option value="links">Links</option>
+            <option value="images">Images</option>
+            <option value="metadata">Metadata</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-center">
         <div class="w-1/4"></div>
         <div class="w-3/4">
           <span id="error-tip" class="text-red-600"></span>

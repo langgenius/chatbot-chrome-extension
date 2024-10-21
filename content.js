@@ -191,3 +191,24 @@ async function embedChatbot() {
     handleElementDrag(targetButton);
   }
 }
+
+// Function to extract key data points from the webpage
+function extractData() {
+  const data = {
+    headings: Array.from(document.querySelectorAll('h1, h2, h3')).map(h => h.innerText),
+    paragraphs: Array.from(document.querySelectorAll('p')).map(p => p.innerText),
+    links: Array.from(document.querySelectorAll('a')).map(a => a.href),
+    images: Array.from(document.querySelectorAll('img')).map(img => img.src),
+    metadata: {
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.content || '',
+      keywords: document.querySelector('meta[name="keywords"]')?.content || ''
+    }
+  };
+
+  // Send the extracted data to the background script
+  chrome.runtime.sendMessage({ action: 'sendData', data: data });
+}
+
+// Call the extractData function when the content script is loaded
+extractData();
