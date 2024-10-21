@@ -9,7 +9,10 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": ["webRequest", "storage"],
+  "permissions": ["webRequest", "storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
       "default_popup": "options.html",
       "default_icon": {
@@ -25,5 +28,8 @@
     "32": "images/32.png",
     "48": "images/48.png",
     "128": "images/128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
   }
 }

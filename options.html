@@ -4,6 +4,10 @@
 <head>
   <title>Dify Chatbot Extension</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
   <link href="./tailwind.css" rel="stylesheet">
 </head>
 
@@ -19,6 +23,30 @@
           <input type="text" id="chatbot-url" name="base-url" value=""
             class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-400"
             placeholder="https://udify.app/chatbot/7CQBa5yyvYLSkZtx">
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-center">
+        <div class="w-1/4">
+          <label for="data-extraction" class="block font-semibold text-gray-700">Enable Data Extraction</label>
+        </div>
+        <div class="w-3/4">
+          <input type="checkbox" id="data-extraction" name="data-extraction" class="mr-2">
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-center">
+        <div class="w-1/4">
+          <label for="data-types" class="block font-semibold text-gray-700">Data Types to Extract</label>
+        </div>
+        <div class="w-3/4">
+          <select id="data-types" name="data-types" multiple class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-400">
+            <option value="headings">Headings</option>
+            <option value="paragraphs">Paragraphs</option>
+            <option value="links">Links</option>
+            <option value="images">Images</option>
+            <option value="metadata">Metadata</option>
+          </select>
         </div>
       </div>
 

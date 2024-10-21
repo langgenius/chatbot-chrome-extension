@@ -1,11 +1,36 @@
 const storage = chrome.storage.sync;
 chrome.storage.sync.get(['chatbotUrl'], function(result) {
   window.difyChatbotConfig = { 
-    chatbotUrl: result.chatbotUrl,
+    chatbotUrl: sanitizeUrl(result.chatbotUrl),
   };
 });
 
 document.body.onload = embedChatbot;
+
+function sanitizeUrl(url) {
+  const parser = document.createElement('a');
+  parser.href = url;
+
+  // Check if the URL is valid
+  if (!parser.protocol || !parser.host) {
+    console.warn('Invalid URL');
+    return '';
+  }
+
+  // Check if the URL uses HTTPS
+  if (parser.protocol !== 'https:') {
+    console.warn('URL must use HTTPS');
+    return '';
+  }
+
+  // Check for malicious scripts
+  if (url.includes('javascript:') || url.includes('<script>')) {
+    console.warn('URL contains malicious scripts');
+    return '';
+  }
+
+  return url;
+}
 
 async function embedChatbot() {
   const difyChatbotConfig = window.difyChatbotConfig;
@@ -166,3 +191,24 @@ async function embedChatbot() {
     handleElementDrag(targetButton);
   }
 }
+
+// Function to extract key data points from the webpage
+function extractData() {
+  const data = {
+    headings: Array.from(document.querySelectorAll('h1, h2, h3')).map(h => h.innerText),
+    paragraphs: Array.from(document.querySelectorAll('p')).map(p => p.innerText),
+    links: Array.from(document.querySelectorAll('a')).map(a => a.href),
+    images: Array.from(document.querySelectorAll('img')).map(img => img.src),
+    metadata: {
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.content || '',
+      keywords: document.querySelector('meta[name="keywords"]')?.content || ''
+    }
+  };
+
+  // Send the extracted data to the background script
+  chrome.runtime.sendMessage({ action: 'sendData', data: data });
+}
+
+// Call the extractData function when the content script is loaded
+extractData();
